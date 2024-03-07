@@ -34,6 +34,31 @@ namespace Speisekarte.Controllers
             _context.SaveChanges();
         }
 
+        [HttpGet]
+        [Route("GetAll")]
+        public IActionResult GetSpeisen()
+        {
+            // Mehode dass die Zutatn auch in Json angezeigt werden und ohne [JsonIgnore] im Model
+            var speisen = _context.Speisen
+                .Include(s => s.Zutaten)
+                .Select(s => new
+                {
+                    Id = s.Id,
+                    Titel = s.Titel,
+                    Sterne = s.Sterne,
+                    Zutaten = s.Zutaten.Select(z => new
+                    {
+                        Id = z.Id,
+                        Beschreibung = z.Beschreibung,
+                        Einheit = z.Einheit,
+                        Menge = z.Menge
+                    }).ToList()
+                });
+        
+            return Ok(speisen);
+        }
+
+
 
         [HttpGet]
         [Route("GetAll")]
