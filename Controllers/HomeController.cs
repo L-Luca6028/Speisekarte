@@ -26,7 +26,7 @@ namespace Speisekarte.Controllers
 
         public IActionResult CreateSpeiseForm()
         {
-            //// Informationen f�r eine Drop-Down-Liste bereitstellen
+            //// Informationen für eine Drop-Down-Liste bereitstellen
             List<SelectListItem> selectListItems = new List<SelectListItem>();
             SelectListItem eintrag1 = new SelectListItem("Yummy Good", "5");
             selectListItems.Add(eintrag1);
@@ -39,7 +39,7 @@ namespace Speisekarte.Controllers
             SelectListItem eintrag5 = new SelectListItem("Awful", "1");
             selectListItems.Add(eintrag5);
             
-            // Die �bergabe erfolgt �ber das ViewData-Dictionary
+            // Die Übergabe erfolgt über das ViewData-Dictionary
             ViewData["Kategorien"] = selectListItems;
 
             return View();
@@ -84,6 +84,26 @@ namespace Speisekarte.Controllers
             }
             return RedirectToAction(nameof(Index));
         }
+
+        // Eine Methode um eine Speise zu löschen ohne JavaSxript im Frontend
+        public async Task<IActionResult> DeleteData(int id)
+        {
+            HttpClient client = new HttpClient();
+            client.BaseAddress = new Uri("https://localhost:7160/api/Data/");
+        
+            HttpResponseMessage response = await client.DeleteAsync($"Delete?id={id}");
+            if (response.IsSuccessStatusCode)
+            {
+                // Erfolgreich gelöscht
+                return RedirectToAction(nameof(Index));
+            }
+            else
+            {
+                // Fehler beim Löschen
+                return RedirectToAction(nameof(Error));
+            }
+        }
+
 
 
         public IActionResult Privacy()
