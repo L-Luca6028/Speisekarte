@@ -12,7 +12,7 @@ namespace Speisekarte.Models
         [MaxLength(5), MinLength(2, ErrorMessage = "Minimum Length must be 2")] // Werden Data Annotations genannt
         public string Einheit { get; set; } = string.Empty;
         public decimal Menge { get; set; }
-        public Speise? Speise { get; set; } // Navigationproperty
+        public Speise? Speise { get; set; } // Navigationproperty, nötig für die Datenbank
         public int? SpeiseId { get; set; }
 
         public override string ToString()
